@@ -12,6 +12,11 @@ pipeline {
         DirToPurge = 'C:\\Livrables\\All_dotnet'
       }
       parallel {
+	      stage('RestoreNuget') {
+          steps {
+            bat '"%WORKSPACE%\\build\\nuget.exe" restore "%WORKSPACE%\\GCRADC.sln"'
+          }
+        }
         stage('PurgeLivrablesDir') {
           steps {
             script {
@@ -39,12 +44,6 @@ $count++
               }
             }
 
-          }
-        }
-
-        stage('RestoreNuget') {
-          steps {
-            bat '"%WORKSPACE%\\build\\nuget.exe" restore "%WORKSPACE%\\GCRADC.sln"'
           }
         }
 
