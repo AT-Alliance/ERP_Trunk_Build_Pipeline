@@ -17,7 +17,24 @@ pipeline {
 
         stage('PurgeLivrablesDir') {
           steps {
-            powershell 'aaaa'
+            powershell '''
+								$DirectoryToPurge="$($env:DirToPurge)"
+								#$DirectoryToPurge="C:\\Livrables\\All_dotnet"
+								$count=0
+								
+								#Creer le repertoire de base du livrable s\\\'il n\\\'existe pas
+								if ( Test-Path $($DirectoryToPurge) ) {
+									$getAllFilesLivrableDirectory=gci $DirectoryToPurge -File -Recurse
+									$getAllFilesLivrableDirectory |%{
+										Remove-Item $($_.Fullname) -Recurse -Force
+										"Fichier \'$($_.Fullname)\' supprimé"
+										$count++
+									}
+									"---"
+									"$($count) fichiers purgés dans \'$($DirectoryToPurge)\'"
+									"---"
+								} 
+							'''
           }
         }
 
