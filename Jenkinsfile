@@ -65,4 +65,7 @@ $count++
     }
 
   }
+  environment {
+    DirToPurge = 'C:\\\\Livrables\\\\All_dotnet'
+  }
 }
