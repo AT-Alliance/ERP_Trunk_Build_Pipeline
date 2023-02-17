@@ -8,6 +8,9 @@ pipeline {
     }
 
     stage('ParallelStages') {
+      environment {
+        DirToPurge = 'C:\\Livrables\\All_dotnet'
+      }
       parallel {
         stage('PurgeLivrablesDir') {
           steps {
@@ -64,8 +67,5 @@ $count++
       }
     }
 
-  }
-  environment {
-    DirToPurge = 'C:\\\\Livrables\\\\All_dotnet'
   }
 }
