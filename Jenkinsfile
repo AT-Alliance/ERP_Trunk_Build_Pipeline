@@ -8,8 +8,19 @@ pipeline {
     }
 
     stage('RestoreNuget') {
-      steps {
-        bat '"%WORKSPACE%\\build\\nuget.exe" restore "%WORKSPACE%\\GCRADC.sln"'
+      parallel {
+        stage('RestoreNuget') {
+          steps {
+            bat '"%WORKSPACE%\\build\\nuget.exe" restore "%WORKSPACE%\\GCRADC.sln"'
+          }
+        }
+
+        stage('PurgeLivrablesDir') {
+          steps {
+            powershell 'aaaa'
+          }
+        }
+
       }
     }
 
