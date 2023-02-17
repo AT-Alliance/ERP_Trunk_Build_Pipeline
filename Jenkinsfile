@@ -21,8 +21,8 @@ pipeline {
         stage('PurgeLivrablesDir') {
           steps {
             powershell '''
-								$DirectoryToPurge="$($env:DirToPurge)"
-								#$DirectoryToPurge="C:\\Livrables\\All_dotnet"
+								#$DirectoryToPurge="$($env:DirToPurge)"
+								$DirectoryToPurge="C:\\Livrables\\All_dotnet"
 								$count=0
 								
 								#Creer le repertoire de base du livrable s\\\'il n\\\'existe pas
