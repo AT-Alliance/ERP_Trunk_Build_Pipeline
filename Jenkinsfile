@@ -9,7 +9,7 @@ pipeline {
 
     stage('RestoreNuget') {
       steps {
-        bat 'aaa'
+        bat "%WORKSPACE%\\build\\nuget.exe" restore "%WORKSPACE%\\GCRADC.sln"
       }
     }
 
