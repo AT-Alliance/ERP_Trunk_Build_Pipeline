@@ -54,7 +54,7 @@ $count++
 
     stage('BuildSolution') {
       environment {
-        SourceDir = '${WORKSPACE}'
+        SourceDir = 'C:\\Jenkins\\JenkinsHome\\workspace\\ERP_Pipeline_master'
         DestinationDir = 'C:\\Livrables'
         BaseOutputDirectory = 'All_dotnet'
       }
