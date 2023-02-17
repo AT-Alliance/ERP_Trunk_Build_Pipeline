@@ -7,7 +7,7 @@ pipeline {
       }
     }
 
-    stage('RestoreNuget') {
+    stage('ParallelStage') {
       parallel {
         stage('RestoreNuget') {
           steps {
