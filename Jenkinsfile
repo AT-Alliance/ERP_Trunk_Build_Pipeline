@@ -15,7 +15,7 @@ pipeline {
 
     stage('BuildSolution') {
       steps {
-        powershell 'aaaa'
+        powershell 'C:\\\'Program Files (x86)\'\\\'Microsoft Visual Studio\'\\2019\\Professional\\MSBuild\\Current\\Bin\\MSBuild.exe .\\GCRADC.sln /p:Configuration=Release'
       }
     }
 
