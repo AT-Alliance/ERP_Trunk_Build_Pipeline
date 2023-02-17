@@ -20,7 +20,6 @@ pipeline {
 $DirectoryToPurge="$($env:DirToPurge)"
 #$DirectoryToPurge="C:\\Livrables\\All_dotnet"
 $count=0
-
 #Creer le repertoire de base du livrable s\\\'il n\\\'existe pas
 if ( Test-Path $($DirectoryToPurge) ) {
 $getAllFilesLivrableDirectory=gci $DirectoryToPurge -File -Recurse
@@ -48,19 +47,30 @@ $count++
             bat '"%WORKSPACE%\\build\\nuget.exe" restore "%WORKSPACE%\\GCRADC.sln"'
           }
         }
-			}
+
       }
     }
 
     stage('BuildSolution') {
-      steps {
-        script {
-          try {
-            // Build solution step
-            powershell 'C:\\\'Program Files (x86)\'\\\'Microsoft Visual Studio\'\\2019\\Professional\\MSBuild\\Current\\Bin\\MSBuild.exe .\\GCRADC.sln /p:Configuration=Release'
-            println "Build GCRADC.sln successfull!!"
-          } catch (err){
-            println "Build GCRADC.sln failed: ${err}"
+      parallel {
+        stage('BuildSolution') {
+          steps {
+            script {
+              try {
+                // Build solution step
+                powershell 'C:\\\'Program Files (x86)\'\\\'Microsoft Visual Studio\'\\2019\\Professional\\MSBuild\\Current\\Bin\\MSBuild.exe .\\GCRADC.sln /p:Configuration=Release'
+                println "Build GCRADC.sln successfull!!"
+              } catch (err){
+                println "Build GCRADC.sln failed: ${err}"
+              }
+            }
+
+          }
+        }
+
+        stage('CopyDirsFiles') {
+          steps {
+            powershell 'aaa'
           }
         }
 
