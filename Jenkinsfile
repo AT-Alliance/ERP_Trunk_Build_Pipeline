@@ -7,5 +7,11 @@ pipeline {
       }
     }
 
+    stage('RestoreNuget') {
+      steps {
+        bat 'aaa'
+      }
+    }
+
   }
 }
