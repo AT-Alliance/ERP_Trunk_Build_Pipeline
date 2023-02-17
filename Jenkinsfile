@@ -48,7 +48,7 @@ $count++
             bat '"%WORKSPACE%\\build\\nuget.exe" restore "%WORKSPACE%\\GCRADC.sln"'
           }
         }
-
+			}
       }
     }
 
