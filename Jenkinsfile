@@ -53,6 +53,11 @@ $count++
     }
 
     stage('BuildSolution') {
+      environment {
+        SourceDir = '${WORKSPACE}'
+        DestinationDir = 'C:\\Livrables'
+        BaseOutputDirectory = 'All_dotnet'
+      }
       parallel {
         stage('BuildSolution') {
           steps {
