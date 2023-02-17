@@ -7,21 +7,16 @@ pipeline {
       }
     }
 
-    stage('ParallelStage') {
+    stage('ParallelStages') {
       parallel {
-        stage('RestoreNuget') {
-          steps {
-            bat '"%WORKSPACE%\\build\\nuget.exe" restore "%WORKSPACE%\\GCRADC.sln"'
-          }
-        }
-
+        
         stage('PurgeLivrablesDir') {
 				steps {
 					script {
 						try {
 							powershell '''
-								#$DirectoryToPurge="$($env:DirToPurge)"
-								$DirectoryToPurge="C:\\Livrables\\All_dotnet"
+								$DirectoryToPurge="$($env:DirToPurge)"
+								#$DirectoryToPurge="C:\\Livrables\\All_dotnet"
 								$count=0
 								
 								#Creer le repertoire de base du livrable s\\\'il n\\\'existe pas
@@ -43,6 +38,12 @@ pipeline {
         			}
                 }
             }
+        }
+				
+				stage('RestoreNuget') {
+          steps {
+            bat '"%WORKSPACE%\\build\\nuget.exe" restore "%WORKSPACE%\\GCRADC.sln"'
+          }
         }
       }
     }
