@@ -8,9 +8,6 @@ pipeline {
     }
 
     stage('RestoreNuget') {
-      environment {
-        DirToPurge = 'C:\\\\Livrables\\\\All_dotnet'
-      }
       parallel {
         stage('RestoreNuget') {
           steps {
