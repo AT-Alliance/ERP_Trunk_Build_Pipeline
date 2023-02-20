@@ -38,9 +38,9 @@ $count++
 "---"
 }
 '''
-                println 'Purge "$($env:DirToPurge)" success!!'
+                println "Purge \'$DirToPurge\' success!!"
               } catch (err){
-                println 'Purge "$($env:DirToPurge)" failed: ${err}!!'
+                println "Purge \'$DirToPurge\' failed: ${err}!!"
               }
             }
 
@@ -124,9 +124,9 @@ if ( (Test-Path $($SourceDirectory)) -and (Test-Path $($DestinationDirectory)) )
 } else {
     "Erreur!!! Verifier l\'existence des repertoires source et destination!!"
 }'''
-				println 'Copy "$($env:SourceDir)" to "$($env:DestinationDir)" success!!'
+				println "Copy \'$SourceDir\' to \'$DestinationDir\' success!!"
 			} catch (err) {
-				println 'Copy "$($env:SourceDir)" to "$($env:DestinationDir)" failed: ${err}!!'
+				println "Copy \'$SourceDir\' to \'$DestinationDir\' failed: ${err}!!"
 			}
 		}
 	}
