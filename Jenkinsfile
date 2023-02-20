@@ -67,7 +67,7 @@ $count++
           }
         }
 
-        stage('ERP_C-2_CopyWorkspace_Livrables') { 
+        stage('ERP_C-2_CopyWorkspaceLivrables') { 
 	steps {
 		script {
 			try {
