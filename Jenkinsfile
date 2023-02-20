@@ -117,6 +117,16 @@ if ( (Test-Path $($SourceDirectory)) -and (Test-Path $($DestinationDirectory)) )
 			}
 		}
 		"-------------------------"
+		#Delete .svn directory
+		$GetAllDestDirectory=gci  $($DestinationDirectory) -Directory -Recurse
+		$GetAllDestDirectory |%{
+
+				if ( (Test-Path $_.FullName -PathType Container) -and ($_.BaseName -eq '.svn') ) {
+						Remove-Item $($_.Fullname) -Force -Recurse
+						"Repertoire '$($_.Fullname)' supprimé"
+				} 
+		}
+		"-------------------------"
 		$SourceDirectoryFiles |%{
 		    $item=$_					
 			Copy-Item "$($item.Fullname)" -Destination "$($DestinationDirectory)" -Force
