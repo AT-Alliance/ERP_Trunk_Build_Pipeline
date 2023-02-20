@@ -189,8 +189,26 @@ foreach ($it in $listeDLLs) {
     }
 
     stage('ERP_E_InstallNpm') {
+			environment {
+        GenererAngular = 'Oui'
+      }
       steps {
-        powershell 'aaa'
+        powershell '''# --- DEBUT PORTAGE ------------------------------------------------------------------------------------------------- 
+
+#$BaseOutputRootDirectory="${WORKSPACE}"
+$BaseOutputRootDirectory="C:\\Jenkins\\JenkinsHome\\workspace\\ERP_Pipeline_master"
+#$GenererateAngularOrNot="$($env:GenererAngular)"
+$GenererateAngularOrNot="Oui"
+
+Try {
+
+    if ($GenererateAngularOrNot -eq "Oui") {
+      Set-Location "$($BaseOutputRootDirectory)\\Portage.Angular\\app\\src"
+      . npm install
+    }
+} catch {
+    "An error occurred: $_"
+}'''
       }
     }
 
