@@ -130,7 +130,7 @@ if ( (Test-Path $($SourceDirectory)) -and (Test-Path $($DestinationDirectory)) )
 }'''
 				println "Copy \'$SourceDir\' to \'$DestinationDir\' success!!"
 			} catch (err) {
-				println "Copy \'$SourceDir\' to \'$DestinationDir\' failed: ${err}!!"
+				println "Copy \'$SourceDir\' to \'$DestinationDir\\$BaseOutputDirectory\' failed: ${err}!!"
 			}
 		}
 	}
