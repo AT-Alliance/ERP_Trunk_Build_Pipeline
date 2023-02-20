@@ -86,7 +86,12 @@ $DestinationDirectory="$($env:DestinationDir)"
 $DestinationDirectoryName="$($env:BaseOutputDirectory)"
 $count=0
 
+"SourceDirectory"
+"DestinationDirectory"
+"$DestinationDirectoryName"
+
 #Creer le repertoire de base du livrable s\'il n\'existe pas
+if ( -not (Test-Path "$($DestinationDirectory)\\$($DestinationDirectoryName)") -and ($($DestinationDirectoryName) -ne "") ) {
 if ( -not (Test-Path "$($DestinationDirectory)\\$($DestinationDirectoryName)") -and ($($DestinationDirectoryName) -ne "") ) {
     
     New-Item -ItemType Directory "$($DestinationDirectory)\\$($DestinationDirectoryName)"
