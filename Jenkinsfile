@@ -86,12 +86,11 @@ if ( -not (Test-Path "$($DestinationDirectory)\\$($DestinationDirectoryName)") -
     
     New-Item -ItemType Directory "$($DestinationDirectory)\\$($DestinationDirectoryName)"
     "Le repertoire \'$($DestinationDirectoryName)\' specifie inexistant a ete créé dans \'$($DestinationDirectory)\'"
-    $DestinationDirectory="$($DestinationDirectory)\\$($DestinationDirectoryName)"
     "-------------------------"
 }
 
 if ( (Test-Path $($SourceDirectory)) -and (Test-Path $($DestinationDirectory)) ) {
-								
+	$DestinationDirectory="$($DestinationDirectory)\$($DestinationDirectoryName)"							
 	$SourceDirectory |%{
 									
 		$SourceDirectoryDirs=gci  $($SourceDirectory) -Directory
