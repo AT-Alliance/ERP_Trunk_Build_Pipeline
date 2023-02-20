@@ -86,8 +86,8 @@ $DestinationDirectory="$($env:DestinationDir)"
 $DestinationDirectoryName="$($env:BaseOutputDirectory)"
 $count=0
 
-"SourceDirectory"
-"DestinationDirectory"
+"$SourceDirectory"
+"$DestinationDirectory"
 "$DestinationDirectoryName"
 
 #Creer le repertoire de base du livrable s\'il n\'existe pas
