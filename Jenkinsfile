@@ -62,7 +62,7 @@ $count++
             script {
               try {
                 // Build solution step
-                powershell 'C:\\\'Program Files (x86)\'\\\'Microsoft Visual Studio\'\\2019\\Professional\\MSBuild\\Current\\Bin\\MSBuild.exe .\\GCRADC.sln /p:Configuration=Release'
+                powershell 'C:\\\'Program Files (x86)\'\\\'Microsoft Visual Studio\'\\2019\\Professional\\MSBuild\\Current\\Bin\\MSBuild.exe .\\GCRADC.sln /p:Configuration=Release /p:DeployOnBuild=true'
                 println "Build GCRADC.sln successfull!!"
               } catch (err){
                 println "Build GCRADC.sln failed: ${err}"
