@@ -53,7 +53,7 @@ $count++
 
     stage('ParallelStage_2') {
       environment {
-        SourceDir = 'C:\\Jenkins\\JenkinsHome\\workspace\\ERP_Pipeline_master'
+        SourceDir = '${WORKSPACE}'
         DestinationDir = 'C:\\Livrables'
         BaseOutputDirectory = 'All_dotnet'
       }
@@ -155,7 +155,35 @@ $count++
 
     stage('ERP_D_LaunchDLLs') {
       steps {
-        powershell 'aaa'
+        powershell '''$vstestDir="C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Professional\\Common7\\IDE\\Extensions\\TestPlatform"
+$listeDLLs=\'Common.DaosTests.dll\',\'Common.ServicesTests.dll\',\'CommonTests.dll\'
+
+
+#$BaseOutputRootDirectory="${WORKSPACE}"
+$BaseOutputRootDirectory="C:\\Jenkins\\JenkinsHome\\workspace\\test4"
+#$BaseOutputDirectory="All_dotnet"
+$BaseOutputDirectory=""
+
+foreach ($it in $listeDLLs) {
+	Try {
+        if ( $it -eq "Common.DaosTests.dll" ) {
+		    $rep="Tests.Daos"
+        } elseif ( $it -eq "Common.ServicesTests.dll" ) {
+            $rep="Tests.Services"
+        } elseif ( $it -eq "CommonTests.dll" ) {
+            $rep="Tests.Commun"
+        }
+        
+        . "$($vstestDir)\\vstest.console.exe" "$($BaseOutputRootDirectory)\\$($BaseOutputDirectory)\\$($rep)\\$($it)"
+        "`nExecution terminée sans erreur pour \'$($rep)\\$($it)\' !!`n"
+        "-------------------------`n"
+	} catch {
+        "`nErreur lors de l\'execution de \'$($rep)\\$($it)\' !!`n"
+		"An error occurred: $_"
+        "`n-------------------------`n"
+	}
+
+}'''
       }
     }
 
