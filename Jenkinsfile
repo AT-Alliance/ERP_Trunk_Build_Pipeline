@@ -154,15 +154,16 @@ $count++
     }
 
     stage('ERP_D_LaunchDLLs') {
+	    environment {
+        DestinationDir = 'C:\\Livrables'
+        BaseOutputDirectory = 'All_dotnet'
+      }
       steps {
         powershell '''$vstestDir="C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Professional\\Common7\\IDE\\Extensions\\TestPlatform"
 $listeDLLs=\'Common.DaosTests.dll\',\'Common.ServicesTests.dll\',\'CommonTests.dll\'
 
-
-#$BaseOutputRootDirectory="${WORKSPACE}"
-$BaseOutputRootDirectory="C:\\Jenkins\\JenkinsHome\\workspace\\test4"
-#$BaseOutputDirectory="All_dotnet"
-$BaseOutputDirectory=""
+$DestinationDirectory="$($env:DestinationDir)"
+$DestinationDirectoryName="$($env:BaseOutputDirectory)"
 
 foreach ($it in $listeDLLs) {
 	Try {
@@ -174,7 +175,7 @@ foreach ($it in $listeDLLs) {
             $rep="Tests.Commun"
         }
         
-        . "$($vstestDir)\\vstest.console.exe" "$($BaseOutputRootDirectory)\\$($BaseOutputDirectory)\\$($rep)\\$($it)"
+        . "$($vstestDir)\\vstest.console.exe" "$($DestinationDirectory)\\$($DestinationDirectoryName)\\$($rep)\\$($it)"
         "`nExecution terminée sans erreur pour \'$($rep)\\$($it)\' !!`n"
         "-------------------------`n"
 	} catch {
