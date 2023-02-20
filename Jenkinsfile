@@ -51,6 +51,11 @@ $count++
     }
 
     stage('ParallelStage_2') {
+			environment {
+        SourceDirectory = 'C:\\Jenkins\\JenkinsHome\\workspace\\ERP_Pipeline_master'
+				DestinationDirectory = 'C:\\Livrables'
+				DestinationDirectoryName = 'All_dotnet'
+      }
       parallel {
         stage('ERP_C-1_BuildSolution') {
           steps {
@@ -73,12 +78,12 @@ $count++
 			try {
 				// Get some code from a svn trunk repository
 				powershell '''
-$SourceDirectory="C:\\Jenkins\\JenkinsHome\\workspace\\ERP_Pipeline_master"
-#$SourceDirectory="$($env:SourceDir)"
-$DestinationDirectory="C:\\Livrables"
-#$DestinationDirectory="$($env:DestinationDir)"
-$DestinationDirectoryName="All_dotnet"
-#$DestinationDirectoryName="$($env:BaseOutputDirectory)"
+#$SourceDirectory="C:\\Jenkins\\JenkinsHome\\workspace\\ERP_Pipeline_master"
+$SourceDirectory="$($env:SourceDir)"
+#$DestinationDirectory="C:\\Livrables"
+$DestinationDirectory="$($env:DestinationDir)"
+#$DestinationDirectoryName="All_dotnet"
+$DestinationDirectoryName="$($env:BaseOutputDirectory)"
 $count=0
 
 #Creer le repertoire de base du livrable s\'il n\'existe pas
