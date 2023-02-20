@@ -1,7 +1,7 @@
 pipeline {
   agent any
   stages {
-    stage('CheckoutTrunk') {
+    stage('ERP_Step1_Trunk_Checkout') {
       steps {
         svn checkout([$class: 'SubversionSCM', additionalCredentials: [], excludedCommitMessages: '', excludedRegions: '', excludedRevprop: '', excludedUsers: '', filterChangelog: false, ignoreDirPropChanges: false, includedRegions: '', locations: [[cancelProcessOnExternalsFail: true, credentialsId: '7ef78ec7-cf02-4873-b585-3be09937c0e9', depthOption: 'infinity', ignoreExternalsOption: true, local: '.', remote: 'https://alliance-vm03/svn/ERP_ALLIANCE_ARMAND/trunk']], quietOperation: true, workspaceUpdater: [$class: 'UpdateUpdater']])
       }
@@ -12,12 +12,12 @@ pipeline {
         DirToPurge = 'C:\\Livrables\\All_dotnet'
       }
       parallel {
-	      stage('RestoreNuget') {
+	      stage('ERP_Step2A-1_RestoreNuget') {
           steps {
             bat '"%WORKSPACE%\\build\\nuget.exe" restore "%WORKSPACE%\\GCRADC.sln"'
           }
         }
-        stage('PurgeLivrablesDir') {
+        stage('ERP_Step2A-2_Purge_Livrables') {
           steps {
             script {
               try {
@@ -52,7 +52,7 @@ $count++
 
     stage('ParallelStage_2') {
       parallel {
-        stage('BuildSolution') {
+        stage('ERP_Step2B-1_BuildSolution') {
           steps {
             script {
               try {
@@ -67,7 +67,7 @@ $count++
           }
         }
 
-        stage('CopyDirsFiles') { 
+        stage('ERP_Step2B-2_CopyWorkspace_Livrables') { 
 	steps {
 		script {
 			try {
