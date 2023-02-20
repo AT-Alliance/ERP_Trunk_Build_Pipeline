@@ -154,7 +154,7 @@ $count++
     }
 
     stage('ERP_D_LaunchDLLs') {
-	    environment {
+      environment {
         DestinationDir = 'C:\\Livrables'
         BaseOutputDirectory = 'All_dotnet'
       }
@@ -185,6 +185,12 @@ foreach ($it in $listeDLLs) {
 	}
 
 }'''
+      }
+    }
+
+    stage('ERP_E_InstallNpm') {
+      steps {
+        powershell 'aaa'
       }
     }
 
