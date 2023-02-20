@@ -92,7 +92,6 @@ $count=0
 
 #Creer le repertoire de base du livrable s\'il n\'existe pas
 if ( -not (Test-Path "$($DestinationDirectory)\\$($DestinationDirectoryName)") -and ($($DestinationDirectoryName) -ne "") ) {
-if ( -not (Test-Path "$($DestinationDirectory)\\$($DestinationDirectoryName)") -and ($($DestinationDirectoryName) -ne "") ) {
     
     New-Item -ItemType Directory "$($DestinationDirectory)\\$($DestinationDirectoryName)"
     "Le repertoire \'$($DestinationDirectoryName)\' specifie inexistant a ete créé dans \'$($DestinationDirectory)\'"
