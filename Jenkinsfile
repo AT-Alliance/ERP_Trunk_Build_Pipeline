@@ -130,7 +130,7 @@ if ( (Test-Path $($SourceDirectory)) -and (Test-Path $($DestinationDirectory)) )
 } else {
     "Erreur!!! Verifier l\'existence des repertoires source et destination!!"
 }'''
-				println "Copy \'$SourceDir\' to \'$DestinationDir\' success!!"
+				println "Copy \'$SourceDir\' to \'$DestinationDir\\$BaseOutputDirectory\' success!!"
 			} catch (err) {
 				println "Copy \'$SourceDir\' to \'$DestinationDir\\$BaseOutputDirectory\' failed: ${err}!!"
 			}
