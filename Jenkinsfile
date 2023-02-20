@@ -100,7 +100,7 @@ if ( -not (Test-Path "$($DestinationDirectory)\\$($DestinationDirectoryName)") -
 
 if ( (Test-Path $($SourceDirectory)) -and (Test-Path $($DestinationDirectory)) ) {
 	
-	$DestinationDirectory="$($DestinationDirectory)\$($DestinationDirectoryName)"							
+	$DestinationDirectory="$($DestinationDirectory)\\$($DestinationDirectoryName)"							
 	"$DestinationDirectory"
 	$SourceDirectory |%{
 									
