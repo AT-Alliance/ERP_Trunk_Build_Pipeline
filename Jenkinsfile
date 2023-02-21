@@ -53,7 +53,7 @@ $count++
 
     stage('ParallelStage_2') {
       environment {
-        SourceDir = 'C:\\Jenkins\\JenkinsHome\\workspace\\ERP_Pipeline_master'
+        SourceDir = '${WORKSPACE}'
         DestinationDir = 'C:\\Livrables'
         BaseOutputDirectory = 'All_dotnet'
       }
@@ -86,31 +86,23 @@ $DestinationDirectory="$($env:DestinationDir)"
 #$DestinationDirectoryName="All_dotnet"
 $DestinationDirectoryName="$($env:BaseOutputDirectory)"
 $count=0
-
 "$SourceDirectory"
 "$DestinationDirectory"
 "$DestinationDirectoryName"
-
 #Creer le repertoire de base du livrable s\'il n\'existe pas
 if ( -not (Test-Path "$($DestinationDirectory)\\$($DestinationDirectoryName)") -and ($($DestinationDirectoryName) -ne "") ) {
-
 New-Item -ItemType Directory "$($DestinationDirectory)\\$($DestinationDirectoryName)"
 "Le repertoire \'$($DestinationDirectoryName)\' specifie inexistant a ete créé dans \'$($DestinationDirectory)\'"
 "-------------------------"
 }
-
 if ( (Test-Path $($SourceDirectory)) -and (Test-Path $($DestinationDirectory)) ) {
-
 $DestinationDirectory="$($DestinationDirectory)\\$($DestinationDirectoryName)"
 "$DestinationDirectory"
 $SourceDirectory |%{
-
 $SourceDirectoryDirs=gci  $($SourceDirectory) -Directory
 $SourceDirectoryFiles=gci $($SourceDirectory) -File
-
 $SourceDirectoryDirs |%{
 $item=$_
-
 if (Test-Path $($SourceDirectory) -PathType Container) { #Test-Path -Path $($item) -PathType Container) {
 Copy-Item -Path "$($item.Fullname)" -Destination "$($DestinationDirectory)" -Recurse -Force
 "Repertoire \'$($item.Name)\' copié"
@@ -121,7 +113,6 @@ $count++
 #Delete .svn directory
 $GetAllDestDirectory=gci  $($DestinationDirectory) -Directory -Recurse
 $GetAllDestDirectory |%{
-
 if ( (Test-Path $_.FullName -PathType Container) -and ($_.BaseName -eq '.svn') ) {
 Remove-Item $($_.Fullname) -Force -Recurse
 "Repertoire '$($_.Fullname)' supprimé"
@@ -163,7 +154,6 @@ $count++
 $listeDLLs=\'Common.DaosTests.dll\',\'Common.ServicesTests.dll\',\'CommonTests.dll\'
 $DestinationDirectory="$($env:DestinationDir)"
 $DestinationDirectoryName="$($env:BaseOutputDirectory)"
-
 foreach ($it in $listeDLLs) {
 	Try {
         if ( $it -eq "Common.DaosTests.dll" ) {
@@ -182,32 +172,13 @@ foreach ($it in $listeDLLs) {
 		"An error occurred: $_"
         "`n-------------------------`n"
 	}
-
 }'''
       }
     }
 
     stage('ERP_E_InstallNpm') {
-			environment {
-        GenererAngular = 'Oui'
-      }
       steps {
-        powershell '''# --- DEBUT PORTAGE ------------------------------------------------------------------------------------------------- 
-
-#$BaseOutputRootDirectory="${WORKSPACE}"
-$BaseOutputRootDirectory="C:\\Jenkins\\JenkinsHome\\workspace\\ERP_Pipeline_master"
-#$GenererateAngularOrNot="$($env:GenererAngular)"
-$GenererateAngularOrNot="Oui"
-
-Try {
-
-    if ($GenererateAngularOrNot -eq "Oui") {
-      Set-Location "$($BaseOutputRootDirectory)\\Portage.Angular\\app\\src"
-      . npm install
-    }
-} catch {
-    "An error occurred: $_"
-}'''
+        powershell 'aaa'
       }
     }
 
