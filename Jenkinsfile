@@ -155,12 +155,12 @@ $count++
           steps {
              powershell '''
                 #$SourceDirectory="C:\\Jenkins\\JenkinsHome\\workspace\\ERP_Pipeline_master"
-$SourceDirectory = "\\\\aci-cicd\\Livrables\\All_dotnet\\Tests.*"
-#$SourceDirectory="$($env:SourceDir)"
-$DestinationDirectory = "\\\\ALLIANCE-VM03\\c\$\\Livrables"
-#$DestinationDirectory="$($env:DestinationDir)"
-$DestinationDirectoryName = "All_dotnet"
-#$DestinationDirectoryName="$($env:BaseOutputDirectory)"
+#$SourceDirectory = "\\\\aci-cicd\\Livrables\\All_dotnet\\Tests.*"
+$SourceDirectory="$($env:SourceDir)"
+#$DestinationDirectory = "\\\\ALLIANCE-VM03\\c\$\\Livrables"
+$DestinationDirectory="$($env:DestinationDir)"
+#$DestinationDirectoryName = "All_dotnet"
+$DestinationDirectoryName="$($env:BaseOutputDirectory)"
 $count=0
 #Creer le repertoire de base du livrable s\'il n\'existe pas
 if ( -not (Test-Path "$($DestinationDirectory)\\$($DestinationDirectoryName)") -and ($($DestinationDirectoryName) -ne "") ) {
@@ -235,7 +235,7 @@ $listeDLLs=\'Common.DaosTests.dll\',\'Common.ServicesTests.dll\',\'CommonTests.d
 
 
 $BaseOutputRootDirectory="C:\\Livrables"
-$BaseOutputDirectory="All_dotnet"
+$BaseOutputDirectory="All_dotnet\\Tests.*"
 #$BaseOutputDirectory=""
 
 foreach ($it in $listeDLLs) {
