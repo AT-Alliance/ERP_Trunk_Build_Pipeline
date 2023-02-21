@@ -53,7 +53,7 @@ $count++
 
     stage('ParallelStage_2') {
       environment {
-        SourceDir = 'C:\Jenkins\JenkinsHome\workspace\ERP_Pipeline_master'
+        SourceDir = 'C:\\Jenkins\\JenkinsHome\\workspace\\ERP_Pipeline_master'
         DestinationDir = 'C:\\Livrables'
         BaseOutputDirectory = 'All_dotnet'
       }
