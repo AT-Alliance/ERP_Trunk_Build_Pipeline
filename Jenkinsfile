@@ -161,7 +161,6 @@ $count++
       steps {
         powershell '''$vstestDir="C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Professional\\Common7\\IDE\\Extensions\\TestPlatform"
 $listeDLLs=\'Common.DaosTests.dll\',\'Common.ServicesTests.dll\',\'CommonTests.dll\'
-
 $DestinationDirectory="$($env:DestinationDir)"
 $DestinationDirectoryName="$($env:BaseOutputDirectory)"
 
