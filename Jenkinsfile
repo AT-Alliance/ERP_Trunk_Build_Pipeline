@@ -53,7 +53,7 @@ $count++
 
     stage('ParallelStage_2') {
       environment {
-        SourceDir = 'C:\\Jenkins\\JenkinsHome\\workspace\\ERP_Pipeline_master'
+        SourceDir = '${WORKSPACE}'
         DestinationDir = 'C:\\Livrables'
         BaseOutputDirectory = 'All_dotnet'
       }
@@ -145,7 +145,7 @@ $count++
     }
 
     stage('ERP_D_LaunchDLLs') {
-      environment {
+	    environment {
         DestinationDir = 'C:\\Livrables'
         BaseOutputDirectory = 'All_dotnet'
       }
@@ -173,12 +173,6 @@ foreach ($it in $listeDLLs) {
         "`n-------------------------`n"
 	}
 }'''
-      }
-    }
-
-    stage('ERP_E_InstallNpm') {
-      steps {
-        powershell 'aaa'
       }
     }
 
