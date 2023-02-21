@@ -52,11 +52,6 @@ $count++
     }
 
     stage('ParallelStage_2') {
-      environment {
-        SourceDir = 'C:\\Jenkins\\JenkinsHome\\workspace\\ERP_Pipeline_master'
-        DestinationDir = 'C:\\Livrables'
-        BaseOutputDirectory = 'All_dotnet'
-      }
       parallel {
         stage('ERP_C-1_BuildSolution') {
           steps {
@@ -74,6 +69,11 @@ $count++
         }
 
         stage('ERP_C-2_CopyWorkspaceLivrables') {
+				environment {
+						SourceDir = 'C:\\Jenkins\\JenkinsHome\\workspace\\ERP_Pipeline_master'
+						DestinationDir = 'C:\\Livrables'
+						BaseOutputDirectory = 'All_dotnet'
+					}
           steps {
             script {
               try {
@@ -137,8 +137,61 @@ $count++
         }
 
         stage('ERP_C-3_CopyDLLsLivrables') {
+					environment {
+						SourceDir = 'C:\\Jenkins\\JenkinsHome\\workspace\\ERP_Pipeline_master'
+						DestinationDir = 'C:\\Livrables'
+						BaseOutputDirectory = 'All_dotnet'
+					}
           steps {
-            powershell 'aaa'
+            powershell '''
+#$SourceDirectory="C:\\Jenkins\\JenkinsHome\\workspace\\ERP_Pipeline_master"
+$SourceDirectory="$($env:SourceDir)"
+#$DestinationDirectory="C:\\Livrables"
+$DestinationDirectory="$($env:DestinationDir)"
+#$DestinationDirectoryName="All_dotnet"
+$DestinationDirectoryName="$($env:BaseOutputDirectory)"
+$count=0
+"$SourceDirectory"
+"$DestinationDirectory"
+"$DestinationDirectoryName"
+#Creer le repertoire de base du livrable s\'il n\'existe pas
+if ( -not (Test-Path "$($DestinationDirectory)\\$($DestinationDirectoryName)") -and ($($DestinationDirectoryName) -ne "") ) {
+
+New-Item -ItemType Directory "$($DestinationDirectory)\\$($DestinationDirectoryName)"
+"Le repertoire \'$($DestinationDirectoryName)\' specifie inexistant a ete créé dans \'$($DestinationDirectory)\'"
+"-------------------------"
+}
+if ( (Test-Path $($SourceDirectory)) -and (Test-Path $($DestinationDirectory)) ) {
+
+$DestinationDirectory="$($DestinationDirectory)\\$($DestinationDirectoryName)"
+"$DestinationDirectory"
+$SourceDirectory |%{
+
+$SourceDirectoryDirs=gci  $($SourceDirectory) -Directory
+$SourceDirectoryFiles=gci $($SourceDirectory) -File
+
+$SourceDirectoryDirs |%{
+$item=$_
+if (Test-Path $($SourceDirectory) -PathType Container) { #Test-Path -Path $($item) -PathType Container) {
+Copy-Item -Path "$($item.Fullname)" -Destination "$($DestinationDirectory)" -Recurse -Force
+"Repertoire \'$($item.Name)\' copié"
+$count++
+}
+}
+"-------------------------"
+$SourceDirectoryFiles |%{
+$item=$_
+Copy-Item "$($item.Fullname)" -Destination "$($DestinationDirectory)" -Force
+"Fichier \'$($item.Name)\' copié"
+$count++
+}
+}
+"---"
+"$($count) items copiés dans \'$($DestinationDirectory)\'"
+"---"
+} else {
+"Erreur!!! Verifier l\'existence des repertoires source et destination!!"
+}'''
           }
         }
 
