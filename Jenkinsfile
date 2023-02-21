@@ -138,9 +138,9 @@ $count++
 
         stage('ERP_C-3_CopyDLLsLivrables') {
 					environment {
-						SourceDir = 'C:\\Jenkins\\JenkinsHome\\workspace\\ERP_Pipeline_master'
-						DestinationDir = 'C:\\Livrables'
-						BaseOutputDirectory = 'All_dotnet'
+						SourceDir = "\\\\aci-cicd\\Livrables\\All_dotnet\\Tests.*"
+						DestinationDir = "\\\\ALLIANCE-VM03\\c$\\Livrables"'
+						BaseOutputDirectory = "All_dotnet"
 					}
           steps {
             powershell '''
