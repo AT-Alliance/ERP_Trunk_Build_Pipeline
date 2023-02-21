@@ -226,8 +226,8 @@ if ( (Test-Path $($SourceDirectory)) -and (Test-Path $($DestinationDirectory)) )
 
     stage('ERP_D_LaunchDLLs') {
       environment {
-        DestinationDir = 'C:\\Livrables'
-        BaseOutputDirectory = 'All_dotnet'
+        DestinationDir = "C:\\Livrables"
+        BaseOutputDirectory = "All_dotnet"
       }
       steps {
         powershell '''$vstestDir="C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Professional\\Common7\\IDE\\Extensions\\TestPlatform"
