@@ -114,6 +114,16 @@ $count++
 }
 }
 "-------------------------"
+#Delete .svn directory
+        $GetAllDestDirectory=gci  $($DestinationDirectory) -Directory -Recurse
+        $GetAllDestDirectory |%{
+            
+            if ( (Test-Path $_.FullName -PathType Container) -and ($_.BaseName -eq '.svn') ) {
+                Remove-Item $($_.Fullname) -Force -Recurse
+                "Repertoire '$($_.Fullname)' supprimé"
+            } 
+        }
+        "-------------------------"
 $SourceDirectoryFiles |%{
 $item=$_
 Copy-Item "$($item.Fullname)" -Destination "$($DestinationDirectory)" -Force
@@ -138,10 +148,10 @@ $count++
 
         stage('ERP_C-3_CopyDLLsLivrables') {
 					environment {
-				SourceDir = "\\\\aci-cicd\\Livrables\\All_dotnet\\Tests.*"
-				DestinationDir = "\\\\ALLIANCE-VM03\\c\$\\Livrables"
-				BaseOutputDirectory = "All_dotnet"
-			}
+						SourceDir = "\\\\aci-cicd\\Livrables\\All_dotnet\\Tests.*"
+						DestinationDir = "\\\\ALLIANCE-VM03\\c\$\\Livrables"
+						BaseOutputDirectory = "All_dotnet"
+					}
           steps {
              powershell '''
                 #$SourceDirectory="C:\\Jenkins\\JenkinsHome\\workspace\\ERP_Pipeline_master"
@@ -223,8 +233,10 @@ if ( (Test-Path $($SourceDirectory)) -and (Test-Path $($DestinationDirectory)) )
         powershell '''$vstestDir="C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Professional\\Common7\\IDE\\Extensions\\TestPlatform"
 $listeDLLs=\'Common.DaosTests.dll\',\'Common.ServicesTests.dll\',\'CommonTests.dll\'
 
-$DestinationDirectory="$($env:DestinationDir)"
-$DestinationDirectoryName="$($env:BaseOutputDirectory)"
+
+$BaseOutputRootDirectory="C:\\Livrables"
+$BaseOutputDirectory="All_dotnet"
+#$BaseOutputDirectory=""
 
 foreach ($it in $listeDLLs) {
 	Try {
