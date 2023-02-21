@@ -235,7 +235,7 @@ $listeDLLs=\'Common.DaosTests.dll\',\'Common.ServicesTests.dll\',\'CommonTests.d
 
 
 $BaseOutputRootDirectory="C:\\Livrables"
-$BaseOutputDirectory="All_dotnet\\Tests.*"
+$BaseOutputDirectory="All_dotnet"
 #$BaseOutputDirectory=""
 
 foreach ($it in $listeDLLs) {
@@ -248,6 +248,7 @@ foreach ($it in $listeDLLs) {
             $rep="Tests.Commun"
         }
         
+	"$($vstestDir)\\vstest.console.exe" "$($BaseOutputRootDirectory)\\$($BaseOutputDirectory)\\$($rep)\\$($it)"
         . "$($vstestDir)\\vstest.console.exe" "$($BaseOutputRootDirectory)\\$($BaseOutputDirectory)\\$($rep)\\$($it)"
         "`nExecution terminée sans erreur pour \'$($rep)\\$($it)\' !!`n"
         "-------------------------`n"
