@@ -140,8 +140,38 @@ $count++
     }
 
     stage('ERP_D_LaunchDLLs') {
+      environment {
+        DestinationDir = 'C:\\Livrables'
+        BaseOutputDirectory = 'All_dotnet'
+      }
       steps {
-        powershell 'aaa'
+        powershell '''$vstestDir="C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Professional\\Common7\\IDE\\Extensions\\TestPlatform"
+$listeDLLs=\'Common.DaosTests.dll\',\'Common.ServicesTests.dll\',\'CommonTests.dll\'
+
+$DestinationDirectory="$($env:DestinationDir)"
+$DestinationDirectoryName="$($env:BaseOutputDirectory)"
+
+foreach ($it in $listeDLLs) {
+	Try {
+        if ( $it -eq "Common.DaosTests.dll" ) {
+		    $rep="Tests.Daos"
+        } elseif ( $it -eq "Common.ServicesTests.dll" ) {
+            $rep="Tests.Services"
+        } elseif ( $it -eq "CommonTests.dll" ) {
+            $rep="Tests.Commun"
+        }
+        
+        . "$($vstestDir)\\vstest.console.exe" "$($BaseOutputRootDirectory)\\$($BaseOutputDirectory)\\$($rep)\\$($it)"
+        "`nExecution terminée sans erreur pour \'$($rep)\\$($it)\' !!`n"
+        "-------------------------`n"
+	} catch {
+        "`nErreur lors de l\'execution de \'$($rep)\\$($it)\' !!`n"
+		"An error occurred: $_"
+        "`n-------------------------`n"
+	}
+
+}
+'''
       }
     }
 
