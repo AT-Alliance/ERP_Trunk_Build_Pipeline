@@ -143,7 +143,7 @@ $count++
 				BaseOutputDirectory = "All_dotnet"
 			}
           steps {
-             '''
+             powershell '''
                 #$SourceDirectory="C:\\Jenkins\\JenkinsHome\\workspace\\ERP_Pipeline_master"
 #$SourceDirectory = "\\\\aci-cicd\\Livrables\\All_dotnet\\Tests.*"
 $SourceDirectory="$($env:SourceDir)"
