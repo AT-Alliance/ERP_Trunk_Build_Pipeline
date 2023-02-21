@@ -69,11 +69,11 @@ $count++
         }
 
         stage('ERP_C-2_CopyWorkspaceLivrables') {
-				environment {
-						SourceDir = 'C:\\Jenkins\\JenkinsHome\\workspace\\ERP_Pipeline_master'
-						DestinationDir = 'C:\\Livrables'
-						BaseOutputDirectory = 'All_dotnet'
-					}
+          environment {
+            SourceDir = 'C:\\Jenkins\\JenkinsHome\\workspace\\ERP_Pipeline_master'
+            DestinationDir = 'C:\\Livrables'
+            BaseOutputDirectory = 'All_dotnet'
+          }
           steps {
             script {
               try {
@@ -115,15 +115,15 @@ $count++
 }
 "-------------------------"
 #Delete .svn directory
-        $GetAllDestDirectory=gci  $($DestinationDirectory) -Directory -Recurse
-        $GetAllDestDirectory |%{
-            
-            if ( (Test-Path $_.FullName -PathType Container) -and ($_.BaseName -eq '.svn') ) {
-                Remove-Item $($_.Fullname) -Force -Recurse
-                "Repertoire '$($_.Fullname)' supprimé"
-            } 
-        }
-        "-------------------------"
+$GetAllDestDirectory=gci  $($DestinationDirectory) -Directory -Recurse
+$GetAllDestDirectory |%{
+
+if ( (Test-Path $_.FullName -PathType Container) -and ($_.BaseName -eq '.svn') ) {
+Remove-Item $($_.Fullname) -Force -Recurse
+"Repertoire '$($_.Fullname)' supprimé"
+}
+}
+"-------------------------"
 $SourceDirectoryFiles |%{
 $item=$_
 Copy-Item "$($item.Fullname)" -Destination "$($DestinationDirectory)" -Force
@@ -147,17 +147,17 @@ $count++
         }
 
         stage('ERP_C-3_CopyDLLsLivrables') {
-					environment {
-						SourceDir = "\\\\aci-cicd\\Livrables\\All_dotnet\\Tests.*"
-						DestinationDir = "\\\\ALLIANCE-VM03\\c\$\\Livrables"
-						BaseOutputDirectory = "All_dotnet"
-					}
+          environment {
+            SourceDir = '\\\\aci-cicd\\Livrables\\All_dotnet\\Tests.*'
+            DestinationDir = '\\\\ALLIANCE-VM03\\c$\\Livrables'
+            BaseOutputDirectory = 'All_dotnet'
+          }
           steps {
-             powershell '''
+            powershell '''
                 #$SourceDirectory="C:\\Jenkins\\JenkinsHome\\workspace\\ERP_Pipeline_master"
 #$SourceDirectory = "\\\\aci-cicd\\Livrables\\All_dotnet\\Tests.*"
 $SourceDirectory="$($env:SourceDir)"
-#$DestinationDirectory = "\\\\ALLIANCE-VM03\\c\$\\Livrables"
+#$DestinationDirectory = "\\\\ALLIANCE-VM03\\c$\\Livrables"
 $DestinationDirectory="$($env:DestinationDir)"
 #$DestinationDirectoryName = "All_dotnet"
 $DestinationDirectoryName="$($env:BaseOutputDirectory)"
@@ -260,6 +260,12 @@ foreach ($it in $listeDLLs) {
 
 }
 '''
+      }
+    }
+
+    stage('ERP_E_InstallNpm') {
+      steps {
+        powershell 'aaa'
       }
     }
 
