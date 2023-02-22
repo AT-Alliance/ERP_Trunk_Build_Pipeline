@@ -198,7 +198,7 @@ if ( (Test-Path $($SourceDirectory)) -and (Test-Path $($DestinationDirectory)) )
         $GetAllDestDirectory |%{
             
             if ( (Test-Path $_.FullName -PathType Container) -and ($_.BaseName -eq \'.svn\') ) {
-                Remove-Item $($_.Fullname) -Force -Recurse
+                Remove-Item $($_.Fullname) -Recurse -Force
                 "Repertoire \'$($_.Fullname)\' supprimé"
             } 
         }
@@ -265,7 +265,7 @@ foreach ($it in $listeDLLs) {
 
     stage('ERP_E_InstallNpm') {
       steps {
-        powershell 'aaa'
+        powershell '"aaa"'
       }
     }
 
