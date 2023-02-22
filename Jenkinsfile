@@ -98,19 +98,19 @@ pipeline {
 
 									if ( (Test-Path $($SourceDirectory)) -and (Test-Path $($DestinationDirectory)) ) {
 
-											$DestinationDirectory="$($DestinationDirectory)\\$($DestinationDirectoryName)"
+										$DestinationDirectory="$($DestinationDirectory)\\$($DestinationDirectoryName)"
 
 										$SourceDirectory |%{
 
 											$SourceDirectoryDirs=gci  $($SourceDirectory) -Directory
 											$SourceDirectoryFiles=gci $($SourceDirectory) -File
 
-													#Copy directories from SourceDirectory to DestinationDirectory
+											#Copy directories from SourceDirectory to DestinationDirectory
 											$SourceDirectoryDirs |%{
 												$item=$_
 												if (Test-Path $($SourceDirectory) -PathType Container) { 
 													Copy-Item -Path "$($item.Fullname)" -Destination "$($DestinationDirectory)" -Recurse -Force
-																	"Repertoire \'$($item.Name)\' copié"
+													"Repertoire \'$($item.Name)\' copié"
 													$count++
 
 												}
@@ -118,22 +118,22 @@ pipeline {
 											}
 											"-------------------------"
 
-													#Delete .svn directory
-													$GetAllDestDirectory=gci  $($DestinationDirectory) -Directory -Recurse
-													$GetAllDestDirectory |%{
+											#Delete .svn directory
+											$GetAllDestDirectory=gci  $($DestinationDirectory) -Directory -Recurse
+											$GetAllDestDirectory |%{
 
-															if ( (Test-Path $_.FullName -PathType Container) -and ($_.BaseName -eq \'.svn\') ) {
-																	Remove-Item $($_.Fullname) -Recurse -Force
-																	"Repertoire \'$($_.Fullname)\' supprimé"
-															} 
-													}
-													"-------------------------"
+												if ( (Test-Path $_.FullName -PathType Container) -and ($_.BaseName -eq \'.svn\') ) {
+													Remove-Item $($_.Fullname) -Recurse -Force
+													"Repertoire \'$($_.Fullname)\' supprimé"
+												} 
+											}
+											"-------------------------"
 
-													#Copy files from SourceDirectory to DestinationDirectory
+											#Copy files from SourceDirectory to DestinationDirectory
 											$SourceDirectoryFiles |%{
-													$item=$_					
+												$item=$_					
 												Copy-Item "$($item.Fullname)" -Destination "$($DestinationDirectory)" -Force
-															"Fichier \'$($item.Name)\' copié"
+												"Fichier \'$($item.Name)\' copié"
 												$count++
 											}
 										}
@@ -141,7 +141,7 @@ pipeline {
 										"$($count) items copiés dans \'$($DestinationDirectory)\'"
 										"---"
 									} else {
-											"Erreur!!! Verifier l\'existence des repertoires source et destination!!"
+										"Erreur!!! Verifier l\'existence des repertoires source et destination!!"
 									}
 								'''
 								println "Copy \'$SourceDir\' to \'$DestinationDir\\$BaseOutputDirectory\' success!!"
@@ -152,7 +152,7 @@ pipeline {
 
 					}
 				}
-
+				
 				stage('ERP_C-3_CopyDLLsLivrables') {
 					environment {
 						SourceDir = '\\\\aci-cicd\\Livrables\\All_dotnet\\Tests.*'
@@ -160,76 +160,83 @@ pipeline {
 						BaseOutputDirectory = 'All_dotnet'
 					}
 					steps {
-						powershell '''
-							#$SourceDirectory="C:\\Jenkins\\JenkinsHome\\workspace\\ERP_Pipeline_master"
-							#$SourceDirectory = "\\\\aci-cicd\\Livrables\\All_dotnet\\Tests.*"
-							$SourceDirectory="$($env:SourceDir)"
-							#$DestinationDirectory = "\\\\ALLIANCE-VM03\\c$\\Livrables"
-							$DestinationDirectory="$($env:DestinationDir)"
-							#$DestinationDirectoryName = "All_dotnet"
-							$DestinationDirectoryName="$($env:BaseOutputDirectory)"
-							$count=0
-							#Creer le repertoire de base du livrable s\'il n\'existe pas
-							if ( -not (Test-Path "$($DestinationDirectory)\\$($DestinationDirectoryName)") -and ($($DestinationDirectoryName) -ne "") ) {
+						script {
+							try {
+								// Get some code from a svn trunk repository
+								powershell '''
+									#$SourceDirectory="C:\\Jenkins\\JenkinsHome\\workspace\\ERP_Pipeline_master"
+									#$SourceDirectory = "\\\\aci-cicd\\Livrables\\All_dotnet\\Tests.*"
+									$SourceDirectory="$($env:SourceDir)"
+									#$DestinationDirectory = "\\\\ALLIANCE-VM03\\c$\\Livrables"
+									$DestinationDirectory="$($env:DestinationDir)"
+									#$DestinationDirectoryName = "All_dotnet"
+									$DestinationDirectoryName="$($env:BaseOutputDirectory)"
+									$count=0
+									#Creer le repertoire de base du livrable s\'il n\'existe pas
+									if ( -not (Test-Path "$($DestinationDirectory)\\$($DestinationDirectoryName)") -and ($($DestinationDirectoryName) -ne "") ) {
 
-									New-Item -ItemType Directory "$($DestinationDirectory)\\$($DestinationDirectoryName)"
-									"`nLe repertoire \'$($DestinationDirectoryName)\' specifie inexistant a ete créé dans \'$($DestinationDirectory)\'`n"
-									"-------------------------"
-							} 
+											New-Item -ItemType Directory "$($DestinationDirectory)\\$($DestinationDirectoryName)"
+											"`nLe repertoire \'$($DestinationDirectoryName)\' specifie inexistant a ete créé dans \'$($DestinationDirectory)\'`n"
+											"-------------------------"
+									} 
 
-							if ( (Test-Path $($SourceDirectory)) -and (Test-Path $($DestinationDirectory)) ) {
+									if ( (Test-Path $($SourceDirectory)) -and (Test-Path $($DestinationDirectory)) ) {
 
-									$DestinationDirectory="$($DestinationDirectory)\\$($DestinationDirectoryName)"
+										$DestinationDirectory="$($DestinationDirectory)\\$($DestinationDirectoryName)"
 
-								$SourceDirectory |%{
+										$SourceDirectory |%{
 
-									$SourceDirectoryDirs=gci  $($SourceDirectory) -Directory
-									$SourceDirectoryFiles=gci $($SourceDirectory) -File
+											$SourceDirectoryDirs=gci  $($SourceDirectory) -Directory
+											$SourceDirectoryFiles=gci $($SourceDirectory) -File
 
 											#Copy directories from SourceDirectory to DestinationDirectory
-									$SourceDirectoryDirs |%{
-										$item=$_
-										if (Test-Path $($SourceDirectory) -PathType Container) { 
-											Copy-Item -Path "$($item.Fullname)" -Destination "$($DestinationDirectory)" -Recurse -Force
-															"Repertoire \'$($item.Name)\' copié"
-											$count++
+											$SourceDirectoryDirs |%{
+												$item=$_
+												if (Test-Path $($SourceDirectory) -PathType Container) { 
+													Copy-Item -Path "$($item.Fullname)" -Destination "$($DestinationDirectory)" -Recurse -Force
+													"Repertoire \'$($item.Name)\' copié"
+													$count++
 
-										}
+												}
 
-									}
-									"-------------------------"
+											}
+											"-------------------------"
 
 											#Delete .svn directory
 											$GetAllDestDirectory=gci  $($DestinationDirectory) -Directory -Recurse
 											$GetAllDestDirectory |%{
 
-													if ( (Test-Path $_.FullName -PathType Container) -and ($_.BaseName -eq \'.svn\') ) {
-															Remove-Item $($_.Fullname) -Recurse -Force
-															"Repertoire \'$($_.Fullname)\' supprimé"
-													} 
+												if ( (Test-Path $_.FullName -PathType Container) -and ($_.BaseName -eq \'.svn\') ) {
+													Remove-Item $($_.Fullname) -Recurse -Force
+													"Repertoire \'$($_.Fullname)\' supprimé"
+												} 
 											}
 											"-------------------------"
 
 											#Copy files from SourceDirectory to DestinationDirectory
-									$SourceDirectoryFiles |%{
-											$item=$_					
-										Copy-Item "$($item.Fullname)" -Destination "$($DestinationDirectory)" -Force
-													"Fichier \'$($item.Name)\' copié"
-										$count++
+											$SourceDirectoryFiles |%{
+												$item=$_					
+												Copy-Item "$($item.Fullname)" -Destination "$($DestinationDirectory)" -Force
+												"Fichier \'$($item.Name)\' copié"
+												$count++
+											}
+										}
+										"---"
+										"$($count) items copiés dans \'$($DestinationDirectory)\'"
+										"---"
+									} else {
+										"Erreur!!! Verifier l\'existence des repertoires source et destination!!"
 									}
-								}
-								"---"
-								"$($count) items copiés dans \'$($DestinationDirectory)\'"
-								"---"
-							} else {
-									"Erreur!!! Verifier l\'existence des repertoires source et destination!!"
+								'''
+								println "Copy \'$SourceDir\' to \'$DestinationDir\\$BaseOutputDirectory\' success!!"
+							} catch (err) {
+								println "Copy \'$SourceDir\' to \'$DestinationDir\\$BaseOutputDirectory\' failed: ${err}!!"
 							}
-						'''
-						println "Copy \'$SourceDir\' to \'$DestinationDir\\$BaseOutputDirectory\' success!!"
-					} catch (err) {
-						println "Copy \'$SourceDir\' to \'$DestinationDir\\$BaseOutputDirectory\' failed: ${err}!!"
+						}
+
 					}
-				}
+				}				
+
 			}
 		}
 
