@@ -1,12 +1,13 @@
 pipeline {
 	agent any
 	stages {
+		
 		stage('ERP_A_TrunkCheckout') {
-		  steps {
-			svn checkout([$class: 'SubversionSCM', additionalCredentials: [], excludedCommitMessages: '', excludedRegions: '', excludedRevprop: '', excludedUsers: '', filterChangelog: false, ignoreDirPropChanges: false, includedRegions: '', locations: [[cancelProcessOnExternalsFail: true, credentialsId: '7ef78ec7-cf02-4873-b585-3be09937c0e9', depthOption: 'infinity', ignoreExternalsOption: true, local: '.', remote: 'https://alliance-vm03/svn/ERP_ALLIANCE_ARMAND/trunk']], quietOperation: true, workspaceUpdater: [$class: 'UpdateUpdater']])
-		  }
+			steps {
+				svn checkout([$class: 'SubversionSCM', additionalCredentials: [], excludedCommitMessages: '', excludedRegions: '', excludedRevprop: '', excludedUsers: '', filterChangelog: false, ignoreDirPropChanges: false, includedRegions: '', locations: [[cancelProcessOnExternalsFail: true, credentialsId: '7ef78ec7-cf02-4873-b585-3be09937c0e9', depthOption: 'infinity', ignoreExternalsOption: true, local: '.', remote: 'https://alliance-vm03/svn/ERP_ALLIANCE_ARMAND/trunk']], quietOperation: true, workspaceUpdater: [$class: 'UpdateUpdater']])
+			}
 		}
-
+		
 		stage('ParallelStage_1') {
 			environment {
 				DirToPurge = 'C:\\Livrables\\All_dotnet'
@@ -50,7 +51,7 @@ pipeline {
 
 			}
 		}
-
+	
 		stage('ParallelStage_2') {
 			parallel {
 				stage('ERP_C-1_BuildSolution') {
@@ -238,52 +239,6 @@ pipeline {
 				}				
 
 			}
-		}
-
-		stage('ERP_D_LaunchDLLs') {
-			environment {
-				DestinationDir = "C:\\Livrables"
-				BaseOutputDirectory = "All_dotnet"
-			}
-			steps {
-				powershell '''
-					$vstestDir="C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Professional\\Common7\\IDE\\Extensions\\TestPlatform"
-					$listeDLLs=\'Common.DaosTests.dll\',\'Common.ServicesTests.dll\',\'CommonTests.dll\'
-
-					$BaseOutputRootDirectory="C:\\Livrables"
-					$BaseOutputDirectory="All_dotnet"
-					#$BaseOutputDirectory=""
-
-					foreach ($it in $listeDLLs) {
-						Try {
-							if ( $it -eq "Common.DaosTests.dll" ) {
-								$rep="Tests.Daos"
-							} elseif ( $it -eq "Common.ServicesTests.dll" ) {
-								$rep="Tests.Services"
-							} elseif ( $it -eq "CommonTests.dll" ) {
-								$rep="Tests.Commun"
-							}
-							
-						"$($vstestDir)\\vstest.console.exe" "$($BaseOutputRootDirectory)\\$($BaseOutputDirectory)\\$($rep)\\$($it)"
-							. "$($vstestDir)\\vstest.console.exe" "$($BaseOutputRootDirectory)\\$($BaseOutputDirectory)\\$($rep)\\$($it)"
-							"`nExecution terminée sans erreur pour \'$($rep)\\$($it)\' !!`n"
-							"-------------------------`n"
-						} catch {
-							"`nErreur lors de l\'execution de \'$($rep)\\$($it)\' !!`n"
-							"An error occurred: $_"
-							"`n-------------------------`n"
-						}
-
-					}
-				'''
-			}
-		}
-
-		stage('ERP_E_InstallNpm') {
-			steps {
-				powershell '"aaa"'
-			}
-
 		}
 	}
 }
