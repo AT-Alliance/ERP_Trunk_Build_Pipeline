@@ -224,7 +224,7 @@ $count++
 			}
 			steps {
 				script {
-					try {
+					
 						powershell '''$vstestDir="C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Professional\\Common7\\IDE\\Extensions\\TestPlatform"
 $listeDLLs=\'Common.DaosTests.dll\',\'Common.ServicesTests.dll\',\'CommonTests.dll\'
 $BaseOutputRootDirectory="C:\\Livrables"
@@ -249,10 +249,7 @@ foreach ($it in $listeDLLs) {
         "`n-------------------------`n"
 	}
 }'''
-						println "Launch DLLs in \'$DestinationDir\\$BaseOutputDirectory\' success!!"
-					} catch (err){
-						println "Launch DLLs in \'$DestinationDir\\$BaseOutputDirectory\' failed: ${err}!!"
-					}
+
 				}
 
 			}
