@@ -7,49 +7,7 @@ pipeline {
       }
     }
 
-    stage('ParallelStage_1') {
-      environment {
-        DirToPurge = 'C:\\Livrables\\All_dotnet'
-      }
-      parallel {
-        stage('ERP_B-1_RestoreNuget') {
-          steps {
-            bat '"%WORKSPACE%\\build\\nuget.exe" restore "%WORKSPACE%\\GCRADC.sln"'
-          }
-        }
-
-        stage('ERP_B-2_PurgeLivrables') {
-          steps {
-            script {
-              try {
-                powershell '''
-$DirectoryToPurge="$($env:DirToPurge)"
-#$DirectoryToPurge="C:\\Livrables\\All_dotnet"
-$count=0
-#Creer le repertoire de base du livrable s\\\'il n\\\'existe pas
-if ( Test-Path $($DirectoryToPurge) ) {
-$getAllFilesLivrableDirectory=gci $DirectoryToPurge -File -Recurse
-$getAllFilesLivrableDirectory |%{
-Remove-Item $($_.Fullname) -Recurse -Force
-"Fichier \'$($_.Fullname)\' supprimé"
-$count++
-}
-"---"
-"$($count) fichiers purgés dans \'$($DirectoryToPurge)\'"
-"---"
-}
-'''
-                println "Purge \'$DirToPurge\' success!!"
-              } catch (err){
-                println "Purge \'$DirToPurge\' failed: ${err}!!"
-              }
-            }
-
-          }
-        }
-
-      }
-    }
+    
 
     stage('ParallelStage_2') {
       parallel {
