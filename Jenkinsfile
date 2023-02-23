@@ -70,7 +70,7 @@ $count++
 
         stage('ERP_C-2_CopyWorkspaceLivrables') {
           environment {
-            SourceDir = 'C:\\Jenkins\\JenkinsHome\\workspace\\ERP_Pipeline_master'
+            SourceDir = 'C:\\Jenkins\\JenkinsHome\\workspace\\ERP_main'
             DestinationDir = 'C:\\Livrables'
             BaseOutputDirectory = 'All_dotnet'
           }
@@ -79,31 +79,25 @@ $count++
               try {
                 // Get some code from a svn trunk repository
                 powershell '''
-#$SourceDirectory="C:\\Jenkins\\JenkinsHome\\workspace\\ERP_Pipeline_master"
+$SourceDirectory="C:\\Jenkins\\JenkinsHome\\workspace\\ERP_main"
 #$SourceDirectory = "\\\\aci-cicd\\Livrables\\All_dotnet\\Tests.*"
-$SourceDirectory="$($env:SourceDir)"
-#$DestinationDirectory = "\\\\ALLIANCE-VM03\\c$\\Livrables"
-$DestinationDirectory="$($env:DestinationDir)"
-#$DestinationDirectoryName = "All_dotnet"
-$DestinationDirectoryName="$($env:BaseOutputDirectory)"
+#$SourceDirectory="$($env:SourceDir)"
+$DestinationDirectory = "\\\\ALLIANCE-VM03\\c$\\Livrables"
+#$DestinationDirectory="$($env:DestinationDir)"
+$DestinationDirectoryName = "All_dotnet"
+#$DestinationDirectoryName="$($env:BaseOutputDirectory)"
 $count=0
 #Creer le repertoire de base du livrable s\'il n\'existe pas
 if ( -not (Test-Path "$($DestinationDirectory)\\$($DestinationDirectoryName)") -and ($($DestinationDirectoryName) -ne "") ) {
-
 New-Item -ItemType Directory "$($DestinationDirectory)\\$($DestinationDirectoryName)"
 "`nLe repertoire \'$($DestinationDirectoryName)\' specifie inexistant a ete créé dans \'$($DestinationDirectory)\'`n"
 "-------------------------"
 }
-
 if ( (Test-Path $($SourceDirectory)) -and (Test-Path $($DestinationDirectory)) ) {
-
 $DestinationDirectory="$($DestinationDirectory)\\$($DestinationDirectoryName)"
-
 $SourceDirectory |%{
-
 $SourceDirectoryDirs=gci  $($SourceDirectory) -Directory
 $SourceDirectoryFiles=gci $($SourceDirectory) -File
-
 #Copy directories from SourceDirectory to DestinationDirectory
 $SourceDirectoryDirs |%{
 $item=$_
@@ -111,23 +105,18 @@ if (Test-Path $($SourceDirectory) -PathType Container) {
 Copy-Item -Path "$($item.Fullname)" -Destination "$($DestinationDirectory)" -Recurse -Force
 "Repertoire \'$($item.Name)\' copié"
 $count++
-
 }
-
 }
 "-------------------------"
-
 #Delete .svn directory
 $GetAllDestDirectory=gci  $($DestinationDirectory) -Directory -Recurse
 $GetAllDestDirectory |%{
-
 if ( (Test-Path $_.FullName -PathType Container) -and ($_.BaseName -eq \'.svn\') ) {
 Remove-Item $($_.Fullname) -Recurse -Force
 "Repertoire \'$($_.Fullname)\' supprimé"
 }
 }
 "-------------------------"
-
 #Copy files from SourceDirectory to DestinationDirectory
 $SourceDirectoryFiles |%{
 $item=$_
@@ -163,7 +152,7 @@ $count++
               try {
                 // Get some code from a svn trunk repository
                 powershell '''
-#$SourceDirectory="C:\\Jenkins\\JenkinsHome\\workspace\\ERP_Pipeline_master"
+#$SourceDirectory="C:\\Jenkins\\JenkinsHome\\workspace\\ERP_main"
 #$SourceDirectory = "\\\\aci-cicd\\Livrables\\All_dotnet\\Tests.*"
 $SourceDirectory="$($env:SourceDir)"
 #$DestinationDirectory = "\\\\ALLIANCE-VM03\\c$\\Livrables"
@@ -173,21 +162,15 @@ $DestinationDirectoryName="$($env:BaseOutputDirectory)"
 $count=0
 #Creer le repertoire de base du livrable s\'il n\'existe pas
 if ( -not (Test-Path "$($DestinationDirectory)\\$($DestinationDirectoryName)") -and ($($DestinationDirectoryName) -ne "") ) {
-
 New-Item -ItemType Directory "$($DestinationDirectory)\\$($DestinationDirectoryName)"
 "`nLe repertoire \'$($DestinationDirectoryName)\' specifie inexistant a ete créé dans \'$($DestinationDirectory)\'`n"
 "-------------------------"
 }
-
 if ( (Test-Path $($SourceDirectory)) -and (Test-Path $($DestinationDirectory)) ) {
-
 $DestinationDirectory="$($DestinationDirectory)\\$($DestinationDirectoryName)"
-
 $SourceDirectory |%{
-
 $SourceDirectoryDirs=gci  $($SourceDirectory) -Directory
 $SourceDirectoryFiles=gci $($SourceDirectory) -File
-
 #Copy directories from SourceDirectory to DestinationDirectory
 $SourceDirectoryDirs |%{
 $item=$_
@@ -195,23 +178,18 @@ if (Test-Path $($SourceDirectory) -PathType Container) {
 Copy-Item -Path "$($item.Fullname)" -Destination "$($DestinationDirectory)" -Recurse -Force
 "Repertoire \'$($item.Name)\' copié"
 $count++
-
 }
-
 }
 "-------------------------"
-
 #Delete .svn directory
 $GetAllDestDirectory=gci  $($DestinationDirectory) -Directory -Recurse
 $GetAllDestDirectory |%{
-
 if ( (Test-Path $_.FullName -PathType Container) -and ($_.BaseName -eq \'.svn\') ) {
 Remove-Item $($_.Fullname) -Recurse -Force
 "Repertoire \'$($_.Fullname)\' supprimé"
 }
 }
 "-------------------------"
-
 #Copy files from SourceDirectory to DestinationDirectory
 $SourceDirectoryFiles |%{
 $item=$_
@@ -249,12 +227,9 @@ $count++
 					try {
 						powershell '''$vstestDir="C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Professional\\Common7\\IDE\\Extensions\\TestPlatform"
 $listeDLLs=\'Common.DaosTests.dll\',\'Common.ServicesTests.dll\',\'CommonTests.dll\'
-
-
 $BaseOutputRootDirectory="C:\\Livrables"
 $BaseOutputDirectory="All_dotnet"
 #$BaseOutputDirectory=""
-
 foreach ($it in $listeDLLs) {
 	Try {
         if ( $it -eq "Common.DaosTests.dll" ) {
@@ -273,7 +248,6 @@ foreach ($it in $listeDLLs) {
 		"An error occurred: $_"
         "`n-------------------------`n"
 	}
-
 }'''
 						println "Purge \'$DirToPurge\' success!!"
 					} catch (err){
